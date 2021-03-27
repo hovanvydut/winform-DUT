@@ -9,6 +9,7 @@ namespace WF_001
 {
     class CSDL
     {
+        public delegate int MyCompare(DataRow p1, DataRow p2);
         private static int trackID = 104;
         public List<SV> listSV = new List<SV>();
         private List<LopSH> listLopSH = new List<LopSH>();
@@ -46,14 +47,7 @@ namespace WF_001
 
             // Datatable danh sach SV
             dtSV = new DataTable();
-            dtSV.Columns.AddRange(new DataColumn[]
-            {
-                new DataColumn("MSSV", typeof(string)),
-                new DataColumn("Ten", typeof(string)),
-                new DataColumn("GioiTinh", typeof(bool)),
-                new DataColumn("NgaySinh", typeof(DateTime)),
-                new DataColumn("Id_Lop", typeof(int))
-            });
+            createDataColumnForSVDataTable(dtSV);
 
             // Khoi tao du lieu (sau nay se load tu DB ra)
             LopSH lop1 = new LopSH(1, "Lop 1");
@@ -94,9 +88,8 @@ namespace WF_001
             }
         }
 
-        public DataTable FilterSVByLopSH(int idLopSH)
+        private void createDataColumnForSVDataTable(DataTable dt)
         {
-            DataTable dt = new DataTable();
             dt.Columns.AddRange(new DataColumn[]
             {
                     new DataColumn("MSSV", typeof(string)),
@@ -105,6 +98,12 @@ namespace WF_001
                     new DataColumn("NgaySinh", typeof(DateTime)),
                     new DataColumn("Id_Lop", typeof(int))
             });
+        }
+
+        public DataTable FilterSVByLopSH(int idLopSH)
+        {
+            DataTable dt = new DataTable();
+            createDataColumnForSVDataTable(dt);
 
             foreach (SV sv in this.listSV)
             {
@@ -195,14 +194,7 @@ namespace WF_001
         public DataTable searchByName(string txt)
         {
             DataTable dt = new DataTable();
-            dt.Columns.AddRange(new DataColumn[]
-            {
-                    new DataColumn("MSSV", typeof(string)),
-                    new DataColumn("Ten", typeof(string)),
-                    new DataColumn("GioiTinh", typeof(bool)),
-                    new DataColumn("NgaySinh", typeof(DateTime)),
-                    new DataColumn("Id_Lop", typeof(int))
-            });
+            createDataColumnForSVDataTable(dt);
 
             foreach(DataRow dr in this.dtSV.Rows)
             {
@@ -219,8 +211,78 @@ namespace WF_001
                     dt.Rows.Add(newDr);
                 }
             }
-            this.dtSV = dt;
             return dt;
+        }
+
+        public int CompareMSSV(DataRow p1, DataRow p2)
+        {
+            string s1 = (string)p1["MSSV"];
+            string s2 = (string)p2["MSSV"];
+            return String.Compare(s1, s2);
+        }
+
+        public int CompareTen(DataRow p1, DataRow p2)
+        {
+            string s1 = (string)p1["Ten"];
+            string s2 = (string)p2["Ten"];
+            return String.Compare(s1, s2);
+        }
+
+        public DataTable sortBy(MyCompare myCompare)
+        {
+            // use shadow clone
+            DataTable dt = new DataTable();
+            createDataColumnForSVDataTable(dt);
+            ShadowCloneSVDataTable(dt, this.dtSV);
+
+            for (int i = dt.Rows.Count - 1; i >= 1; i--)
+            {
+                for (int j = 0; j < i; j++)
+                {
+                    DataRow p1 = cloneSVDataRow(dt, dt.Rows[j]);
+                    DataRow p2 = cloneSVDataRow(dt, dt.Rows[j+1]);
+                    string s1 = (string)p1["MSSV"];
+                    string s2 = (string)p2["MSSV"];
+                    if (myCompare(p1, p2) < 0)
+                    {
+                        dt.Rows.RemoveAt(j);
+                        dt.Rows.InsertAt(p2, j);
+                        dt.Rows.RemoveAt(j+1);
+                        dt.Rows.InsertAt(p1, j + 1);
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        private void ShadowCloneSVDataTable(DataTable dest, DataTable src)
+        {
+            foreach (DataRow dr in src.Rows)
+            {
+                //DataRow newDr = dest.NewRow();
+
+                //newDr["MSSV"] = dr["MSSV"];
+                //newDr["Ten"] = dr["Ten"];
+                //newDr["GioiTinh"] = dr["GioiTinh"];
+                //newDr["NgaySinh"] = dr["NgaySinh"];
+                //newDr["Id_Lop"] = dr["Id_Lop"];
+
+                dest.Rows.Add(cloneSVDataRow(dest, dr));
+            }
+        }
+
+        private DataRow cloneSVDataRow(DataTable dt, DataRow dr)
+        {
+            DataRow newDr = dt.NewRow();
+
+            newDr["MSSV"] = dr["MSSV"];
+            newDr["Ten"] = dr["Ten"];
+            newDr["GioiTinh"] = dr["GioiTinh"];
+            newDr["NgaySinh"] = dr["NgaySinh"];
+            newDr["Id_Lop"] = dr["Id_Lop"];
+
+            return newDr;
         }
     }
 }

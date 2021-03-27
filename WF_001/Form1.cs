@@ -19,7 +19,7 @@ namespace WF_001
         public Form1()
         {
             InitializeComponent();
-            createComboBox();
+            createCbbLopSH();
             createCbbSort();
         }
 
@@ -34,7 +34,7 @@ namespace WF_001
             this.dgvDSSV.DataSource = CSDL.Instance.FilterSVByLopSH(id);
         }
 
-        private void createComboBox()
+        private void createCbbLopSH()
         {
             DataRowCollection r = CSDL.Instance.dtLopSH.Rows;
 
@@ -53,7 +53,8 @@ namespace WF_001
 
         private void createCbbSort()
         {
-
+            this.cbbSort.Items.Add("MSSV");
+            this.cbbSort.Items.Add("Ten");
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -134,6 +135,24 @@ namespace WF_001
                 btnShow_Click(new object(), new EventArgs());
             }
             DataTable dt = CSDL.Instance.searchByName(txt);
+            this.dgvDSSV.DataSource = dt;
+        }
+
+        private void btnSort_Click(object sender, EventArgs e)
+        {
+            DataTable dt;
+            int index = this.cbbSort.SelectedIndex;
+
+            if (index == -1)
+                return;
+
+            string field = (string)(this.cbbSort.Items[index]);
+
+            if (field.Equals("MSSV"))
+                dt = CSDL.Instance.sortBy(CSDL.Instance.CompareMSSV);
+            else
+                dt = CSDL.Instance.sortBy(CSDL.Instance.CompareTen);
+
             this.dgvDSSV.DataSource = dt;
         }
     }

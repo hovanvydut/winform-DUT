@@ -147,5 +147,6 @@ namespace WF_001
             int idLopSH = ((CBBItemTenLopSH)this.cbbLopSH.Items[idx]).value;
             return CSDL.Instance.GetLopSHById(idLopSH);
         }
+
     }
 }

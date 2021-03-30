@@ -154,6 +154,7 @@ namespace WF_001
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(223, 22);
             this.txtSearch.TabIndex = 3;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // btnSearch
             // 

@@ -161,6 +161,7 @@ namespace WF_001
             // 
             // txtMSSV
             // 
+            this.txtMSSV.Enabled = false;
             this.txtMSSV.Location = new System.Drawing.Point(100, 43);
             this.txtMSSV.Name = "txtMSSV";
             this.txtMSSV.ReadOnly = true;

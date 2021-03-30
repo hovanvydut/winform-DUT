@@ -155,5 +155,10 @@ namespace WF_001
 
             this.dgvDSSV.DataSource = dt;
         }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            btnSearch_Click(new object(), new EventArgs());
+        }
     }
 }

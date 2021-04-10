@@ -170,8 +170,7 @@ namespace WF_001
             this.listSV.Add(sv);
             return true;
         }
-
-
+        
         public string GenerateIdForSV()
         {
             return Convert.ToString(++trackID);
@@ -283,6 +282,31 @@ namespace WF_001
             newDr["Id_Lop"] = dr["Id_Lop"];
 
             return newDr;
+        }
+    
+        public DataTable showDataSV(int idLop, string searchTxt)
+        {
+            DataTable dt = new DataTable();
+            createDataColumnForSVDataTable(dt);
+
+            if (idLop > 0)
+            {
+                DataTable filteredData = FilterSVByLopSH(idLop);
+                ShadowCloneSVDataTable(this.dtSV, filteredData);
+                if (searchTxt != null)
+                {
+                    return searchByName(searchTxt);
+                }
+
+                return filteredData;
+            }
+
+            if (searchTxt != null)
+            {
+                return searchByName(searchTxt);
+            }
+
+            return dt;
         }
     }
 }

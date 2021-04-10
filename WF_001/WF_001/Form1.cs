@@ -25,13 +25,20 @@ namespace WF_001
 
         private void btnShow_Click(object sender, EventArgs e)
         {
+            int id = getIdLopSHFromCbb();
+            this.dgvDSSV.DataSource = CSDL.Instance.FilterSVByLopSH(id);
+        }
+
+        private int getIdLopSHFromCbb()
+        {
             int index = this.cbbLopSH.SelectedIndex;
 
             if (index == -1)
                 index = 0; // default value == "ALL"
 
             int id = ((CBBItemTenLopSH)this.cbbLopSH.Items[index]).value;
-            this.dgvDSSV.DataSource = CSDL.Instance.FilterSVByLopSH(id);
+
+            return id;
         }
 
         private void createCbbLopSH()
@@ -49,7 +56,6 @@ namespace WF_001
                 this.cbbLopSH.Items.Add(new CBBItemTenLopSH(value, text));
             }
         }
-
 
         private void createCbbSort()
         {
@@ -99,7 +105,7 @@ namespace WF_001
         private void AddNewSV(SV sv)
         {
             CSDL.Instance.AddNewSV(sv);
-            btnShow_Click(new object(), new EventArgs());
+            Search();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -129,13 +135,28 @@ namespace WF_001
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            string txt = this.txtSearch.Text;
+            Search();
+        }
+
+        private void Search()
+        {
+            string txt = getSearchText();
             if (txt.Equals(""))
             {
                 btnShow_Click(new object(), new EventArgs());
             }
             DataTable dt = CSDL.Instance.searchByName(txt);
             this.dgvDSSV.DataSource = dt;
+        }
+
+        private string getSearchText()
+        {
+            return this.txtSearch.Text;
+        }
+
+        private DataTable Search(int idLop, string searchTxt)
+        {
+            return CSDL.Instance.showDataSV(idLop, searchTxt);
         }
 
         private void btnSort_Click(object sender, EventArgs e)
@@ -158,7 +179,7 @@ namespace WF_001
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            btnSearch_Click(new object(), new EventArgs());
+            this.dgvDSSV.DataSource = Search(getIdLopSHFromCbb(), getSearchText());
         }
     }
 }

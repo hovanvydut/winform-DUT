@@ -61,6 +61,7 @@ namespace WF_001
                 if (item.value == this.currentSV.lopSh.Id)
                 {
                     this.cbbLopSH.SelectedIndex = idx;
+                    break;
                 }
                 idx++;
             }

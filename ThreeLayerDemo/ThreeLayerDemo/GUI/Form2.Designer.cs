@@ -1,5 +1,5 @@
 ﻿
-namespace WF_002
+namespace ThreeLayerDemo.GUI
 {
     partial class Form2
     {
@@ -60,23 +60,24 @@ namespace WF_002
             this.groupBox1.Controls.Add(this.labelMSSV);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(315, 461);
-            this.groupBox1.TabIndex = 1;
+            this.groupBox1.Size = new System.Drawing.Size(654, 280);
+            this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Thong tin chi tiet SV";
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(185, 376);
+            this.btnCancel.Location = new System.Drawing.Point(538, 208);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 37);
             this.btnCancel.TabIndex = 9;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(26, 376);
+            this.btnOk.Location = new System.Drawing.Point(345, 208);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(108, 37);
             this.btnOk.TabIndex = 8;
@@ -88,9 +89,9 @@ namespace WF_002
             // 
             this.groupBox2.Controls.Add(this.rbNu);
             this.groupBox2.Controls.Add(this.rbNam);
-            this.groupBox2.Location = new System.Drawing.Point(26, 253);
+            this.groupBox2.Location = new System.Drawing.Point(345, 99);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(259, 70);
+            this.groupBox2.Size = new System.Drawing.Size(293, 70);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Gioi tinh";
@@ -98,7 +99,7 @@ namespace WF_002
             // rbNu
             // 
             this.rbNu.AutoSize = true;
-            this.rbNu.Location = new System.Drawing.Point(188, 40);
+            this.rbNu.Location = new System.Drawing.Point(216, 40);
             this.rbNu.Name = "rbNu";
             this.rbNu.Size = new System.Drawing.Size(47, 21);
             this.rbNu.TabIndex = 1;
@@ -119,9 +120,9 @@ namespace WF_002
             // 
             // dtpNgaySinh
             // 
-            this.dtpNgaySinh.Location = new System.Drawing.Point(26, 208);
+            this.dtpNgaySinh.Location = new System.Drawing.Point(345, 41);
             this.dtpNgaySinh.Name = "dtpNgaySinh";
-            this.dtpNgaySinh.Size = new System.Drawing.Size(259, 22);
+            this.dtpNgaySinh.Size = new System.Drawing.Size(293, 22);
             this.dtpNgaySinh.TabIndex = 6;
             // 
             // labelLopSH
@@ -180,7 +181,7 @@ namespace WF_002
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(337, 501);
+            this.ClientSize = new System.Drawing.Size(686, 312);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form2";
             this.Text = "Form2";

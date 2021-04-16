@@ -68,7 +68,7 @@ namespace WF_002
             // add new SV
             if (MSSV == -1)
             {
-                mssv = CSDL_OOP.GenerateId();
+                mssv = CSDL_OOP.GenAutoId();
             }
             else
             {

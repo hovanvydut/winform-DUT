@@ -16,10 +16,13 @@ namespace WF_003
         public Form1()
         {
             InitializeComponent();
+            Show();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            this.dataGridView1.DataSource = DBHelper.Instance.GetRecords("SELECT * FROM SV WHERE MSSV = 1");
+            /*
             string connectionString = @"Data Source=HOVANVYDUT;Initial Catalog=StudentManagement;Integrated Security=True";
             SqlConnection cnn = new SqlConnection(connectionString);
 
@@ -38,6 +41,7 @@ namespace WF_003
             cnn.Close();
 
             this.dataGridView1.DataSource = dataSet.Tables["SV"];
+            */
 
             // ShowDataSet();
 

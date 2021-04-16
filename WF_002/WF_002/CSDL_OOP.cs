@@ -39,7 +39,7 @@ namespace WF_002
             List<LopSH> listLopSH = new List<LopSH>();
             foreach(DataRow drLopSH in CSDL.Instance.GetAllLopSH().Rows)
             {
-                LopSH lopSH = ExtractLopSH(drLopSH);
+                LopSH lopSH = ParseLopSH(drLopSH);
                 listLopSH.Add(lopSH);
             }
 
@@ -52,7 +52,7 @@ namespace WF_002
 
             foreach(DataRow drSV in CSDL.Instance.GetAllSV().Rows)
             {
-                listSV.Add(ExtractSV(drSV));
+                listSV.Add(ParseSV(drSV));
             }
 
             return listSV;
@@ -77,7 +77,7 @@ namespace WF_002
 
             foreach (DataRow drSV in CSDL.Instance.GetAllSV().Rows)
             {
-                SV sv = ExtractSV(drSV);
+                SV sv = ParseSV(drSV);
                 if (sv.LopSHId == lopSHId || lopSHId == 0)
                 {
                     listSV.Add(sv);
@@ -111,7 +111,7 @@ namespace WF_002
         {
             foreach (DataRow drLopSH in CSDL.Instance.GetAllLopSH().Rows)
             {
-                LopSH lopSH = ExtractLopSH(drLopSH);
+                LopSH lopSH = ParseLopSH(drLopSH);
                 if (lopSH.Id == id)
                 {
                     return lopSH;
@@ -121,7 +121,7 @@ namespace WF_002
             return null;
         }
 
-        private static SV ExtractSV(DataRow drSV)
+        private static SV ParseSV(DataRow drSV)
         {
             int mssv = Convert.ToInt32(drSV["MSSV"].ToString());
             string ten = drSV["Ten"].ToString();
@@ -132,7 +132,7 @@ namespace WF_002
             return new SV(mssv, ten, gioiTinh, ngaySinh, idLop);
         }
 
-        private static LopSH ExtractLopSH(DataRow drLopSH)
+        private static LopSH ParseLopSH(DataRow drLopSH)
         {
             string idLopSH = drLopSH["Id"].ToString();
             int id = Convert.ToInt32(idLopSH);
@@ -191,7 +191,7 @@ namespace WF_002
             return result;
         }
 
-        public static int GenerateId()
+        public static int GenAutoId()
         {
             List<SV> listSV = CSDL_OOP.Instance.GetAllSV();
             int maxId = 0;

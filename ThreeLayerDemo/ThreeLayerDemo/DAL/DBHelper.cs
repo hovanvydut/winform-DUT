@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.Data;
 
-namespace WF_003
+namespace ThreeLayerDemo.DAL
 {
     class DBHelper
     {
@@ -19,7 +19,7 @@ namespace WF_003
             {
                 if (_Instance == null)
                 {
-                    _Instance = new DBHelper(connectionString); 
+                    _Instance = new DBHelper(connectionString);
                 }
 
                 return _Instance;
@@ -39,18 +39,24 @@ namespace WF_003
         public DataTable GetRecords(string query)
         {
             DataTable dataTable = new DataTable();
-
             SqlCommand command = new SqlCommand(query, cnn);
             SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(command);
             DataSet dataSet = new DataSet();
 
             this.cnn.Open();
-
             sqlDataAdapter.Fill(dataSet, "SV");
-
             this.cnn.Close();
 
             return dataSet.Tables["SV"];
+        }
+        
+        public void ExecuteDB(string query)
+        {
+            SqlCommand cmd = new SqlCommand(query, this.cnn);
+
+            this.cnn.Open();
+            cmd.ExecuteNonQuery();
+            this.cnn.Close();
         }
     }
 }

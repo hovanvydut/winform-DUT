@@ -94,7 +94,7 @@ namespace ThreeLayerDemo.GUI
                 listSV = BLL_QLSV.Instance.GetAllSV();
             }
 
-            List<int> listMSSV = new List<int>();
+            List<string> listMSSV = new List<string>();
 
             foreach (SV sv in listSV)
             {
@@ -116,14 +116,28 @@ namespace ThreeLayerDemo.GUI
                 listSV = BLL_QLSV.searchByText(txtSearch, listSV);
             }
 
+            for (int i = 0; i < listSV.Count; i++)
+            {
+                foreach(CBBItem item in this.cbbLopSH.Items)
+                {
+                    if (listSV[i].ID_Lop.Equals(Convert.ToInt32(item.value)))
+                    {
+                        listSV[i].Ten_Lop = item.key;
+                    }
+                }
+            }
+
             this.dgvDSSV.DataSource = listSV;
+            // Hide id column, Id_Lop column of SV in data gridview
+            this.dgvDSSV.Columns[0].Visible = false;
+            this.dgvDSSV.Columns[4].Visible = false;
         }
 
         private void deleteBtn_Click(object sender, EventArgs e)
         {
             if (this.dgvDSSV.SelectedRows.Count > 0)
             {
-                int MSSV = Convert.ToInt32(this.dgvDSSV.SelectedRows[0].Cells["MSSV"].Value);
+                string MSSV = this.dgvDSSV.SelectedRows[0].Cells["MSSV"].Value.ToString();
                 BLL_QLSV.Instance.DeleteSVByMSSV(MSSV);
                 ReloadView();
             }
@@ -131,12 +145,12 @@ namespace ThreeLayerDemo.GUI
 
         private void btnSort_Click(object sender, EventArgs e)
         {
-            List<int> listMSSV = new List<int>();
+            List<string> listMSSV = new List<string>();
 
             foreach (DataGridViewRow dr in this.dgvDSSV.Rows)
             {
                 string s = dr.Cells["MSSV"].Value.ToString();
-                listMSSV.Add(Convert.ToInt32(s));
+                listMSSV.Add(s);
             }
 
             string sortBy = GetSortByFromCBB();
@@ -163,7 +177,7 @@ namespace ThreeLayerDemo.GUI
                 MessageBox.Show("Vui long chon thong tin can chinh sua!");
                 return;
             }
-            int MSSV = Convert.ToInt32(this.dgvDSSV.SelectedRows[0].Cells["MSSV"].Value);
+            string MSSV = this.dgvDSSV.SelectedRows[0].Cells["MSSV"].Value.ToString();
             Form2 form2 = new Form2(MSSV);
             form2.ReloadViewForm1 = new Form2.PointToForm1(ReloadView);
             form2.Show();

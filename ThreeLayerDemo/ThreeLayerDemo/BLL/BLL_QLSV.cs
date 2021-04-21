@@ -48,21 +48,21 @@ namespace ThreeLayerDemo.BLL
             return DAL_QLSV.Instance.GetAllLopSH();
         }
     
-        public void DeleteSVByMSSV(int MSSV)
+        public void DeleteSVByMSSV(string MSSV)
         {
             DAL_QLSV.Instance.DeleteSVByMSSV(MSSV);
         }
 
-        private static List<SV> GetListSVDGV(List<int> LMSSV)
+        private static List<SV> GetListSVDGV(List<string> LMSSV)
         {
             List<SV> data = new List<SV>();
-            foreach(int MSSV in LMSSV)
+            foreach(string MSSV in LMSSV)
             {
                 data.Add(DAL_QLSV.Instance.GetSVByMSSV(MSSV));
             }
             return data;
         }
-        public static List<SV> ListSVSort(List<int> listMSSV, MyCompare myCompare)
+        public static List<SV> ListSVSort(List<string> listMSSV, MyCompare myCompare)
         {
             List<SV> data = GetListSVDGV(listMSSV);
 
@@ -99,7 +99,7 @@ namespace ThreeLayerDemo.BLL
         {
             DAL_QLSV.Instance.Update(sv);
         }
-        public SV GetSVByMSSV(int MSSV)
+        public SV GetSVByMSSV(string MSSV)
         {
             return DAL_QLSV.Instance.GetSVByMSSV(MSSV);
         }
@@ -120,6 +120,11 @@ namespace ThreeLayerDemo.BLL
             }
 
             return result;
+        }
+
+        public bool isUniqueId(string mssv)
+        {
+            return DAL_QLSV.Instance.checkUniqueId(mssv);
         }
     }
 }

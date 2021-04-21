@@ -16,8 +16,8 @@ namespace ThreeLayerDemo.GUI
     {
         public delegate void PointToForm1();
         public PointToForm1 ReloadViewForm1 { get; set; }
-        private int MSSV;
-        public Form2(int MSSV = -1)
+        private string MSSV;
+        public Form2(string MSSV = "-1")
         {
             InitializeComponent();
             CreateCbbLopSH();
@@ -30,7 +30,7 @@ namespace ThreeLayerDemo.GUI
         private void RenderView()
         {
             // Edit mode
-            if (this.MSSV != -1)
+            if (!this.MSSV.Equals("-1"))
             {
                 SV sv = BLL_QLSV.Instance.GetSVByMSSV(this.MSSV);
                 this.txtMSSV.Text = sv.MSSV.ToString();
@@ -53,6 +53,9 @@ namespace ThreeLayerDemo.GUI
                 }
 
                 this.dtpNgaySinh.Value = sv.NS;
+
+                this.txtMSSV.Enabled = false;
+                this.txtMSSV.ReadOnly = true;
             }
         }
 
@@ -78,6 +81,7 @@ namespace ThreeLayerDemo.GUI
 
         private void btnOk_Click(object sender, EventArgs e)
         {
+            string MSSV = removeAllWhiteSpace(this.txtMSSV.Text.Trim());
             string NameSV = this.txtTen.Text.Trim();
             DateTime NS = this.dtpNgaySinh.Value;
             bool Gender = this.rbNam.Checked;
@@ -89,22 +93,43 @@ namespace ThreeLayerDemo.GUI
                 return;
             }
 
-            SV sv = new SV()
-            {
-                MSSV = this.MSSV,
-                NameSV = NameSV,
-                NS = NS,
-                Gender = Gender,
-                ID_Lop = ID_Lop
-            };
+            SV sv = null;
             
-            // create new SV
-            if (this.MSSV == -1)
+            // create new SV - ADD MODE
+            if (this.MSSV.Equals("-1"))
             {
+                if (MSSV == "")
+                {
+                    MessageBox.Show("ID vui long khong de trong");
+                    return;
+                }
+
+                if (!BLL_QLSV.Instance.isUniqueId(MSSV))
+                {
+                    MessageBox.Show("ID bi trung. Vui long chon ID khac!");
+                    return;
+                }
+
+                sv = new SV()
+                {
+                    MSSV = MSSV,
+                    NameSV = NameSV,
+                    NS = NS,
+                    Gender = Gender,
+                    ID_Lop = ID_Lop
+                };
                 BLL_QLSV.Instance.AddSV(sv);
             } else
             {
-                // Edit existing SV
+                // Edit existing SV - EDIT MODE
+                sv = new SV()
+                {
+                    MSSV = this.MSSV,
+                    NameSV = NameSV,
+                    NS = NS,
+                    Gender = Gender,
+                    ID_Lop = ID_Lop
+                };
                 BLL_QLSV.Instance.Update(sv);
             }
             ReloadViewForm1();
@@ -114,6 +139,19 @@ namespace ThreeLayerDemo.GUI
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Dispose();
+        }
+
+        private static string removeAllWhiteSpace(string txt)
+        {
+            string result = "";
+            foreach (char c in txt)
+            {
+                if (!c.Equals(' '))
+                {
+                    result += c;
+                }
+            }
+            return result;
         }
     }
 }

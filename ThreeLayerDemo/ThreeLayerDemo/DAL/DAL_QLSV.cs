@@ -47,8 +47,9 @@ namespace ThreeLayerDemo.DAL
 
         public void AddSV(SV sv)
         {
-            string query = String.Format("INSERT INTO SV(NameSV, Gender, NS, ID_Lop) VALUES ('{0}', {1}, '{2}', {3})",
-                sv.NameSV, sv.Gender ? 1 : 0, sv.NS.Date.ToString(), sv.ID_Lop);
+            string query = String.Format(
+                "INSERT INTO SV(MSSV, NameSV, Gender, NS, ID_Lop) VALUES ('{0}', '{1}', {2}, '{3}', {4})",
+                sv.MSSV, sv.NameSV, sv.Gender ? 1 : 0, sv.NS.Date.ToString(), sv.ID_Lop);
 
             DBHelper.Instance.ExecuteDB(query);
         }
@@ -70,7 +71,7 @@ namespace ThreeLayerDemo.DAL
         {
             return new SV()
             {
-                MSSV = Convert.ToInt32(dr["MSSV"]),
+                MSSV = dr["MSSV"].ToString(),
                 NameSV = dr["NameSV"].ToString(),
                 Gender = Convert.ToBoolean(dr["Gender"]),
                 NS = Convert.ToDateTime(dr["NS"]),
@@ -87,22 +88,22 @@ namespace ThreeLayerDemo.DAL
             };
         }
     
-        public void DeleteSVByMSSV(int MSSV)
+        public void DeleteSVByMSSV(string MSSV)
         {
-            string query = String.Format("DELETE FROM SV WHERE MSSV = {0}", MSSV);
+            string query = String.Format("DELETE FROM SV WHERE MSSV = '{0}'", MSSV);
             DBHelper.Instance.ExecuteDB(query);
         }
         
-        public SV GetSVByMSSV(int MSSV)
+        public SV GetSVByMSSV(string MSSV)
         {
-            string query = String.Format("SELECT * FROM SV WHERE MSSV = {0}", MSSV);
+            string query = String.Format("SELECT * FROM SV WHERE MSSV = '{0}'", MSSV);
             return ExtractSV(DBHelper.Instance.GetRecords(query).Rows[0]);
         }
 
         public void Update(SV sv)
         {
             string query =
-                String.Format("UPDATE SV SET NameSV = '{0}', Gender = {1}, NS = '{2}', ID_Lop = {3} WHERE MSSV = {4}",
+                String.Format("UPDATE SV SET NameSV = '{0}', Gender = {1}, NS = '{2}', ID_Lop = {3} WHERE MSSV = '{4}'",
                 sv.NameSV, sv.Gender ? 1 : 0, sv.NS.Date.ToString(), sv.ID_Lop, sv.MSSV);
             DBHelper.Instance.ExecuteDB(query);
         }
@@ -118,6 +119,14 @@ namespace ThreeLayerDemo.DAL
             }
 
             return list;
+        }
+
+        public bool checkUniqueId(string mssv)
+        {
+            string query = String.Format("SELECT * FROM SV WHERE MSSV = '{0}'", mssv);
+            DataTable dt = DBHelper.Instance.GetRecords(query);
+
+            return dt.Rows.Count == 0;
         }
     }
 }

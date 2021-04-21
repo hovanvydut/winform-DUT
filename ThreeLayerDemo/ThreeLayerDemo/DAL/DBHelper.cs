@@ -10,7 +10,8 @@ namespace ThreeLayerDemo.DAL
 {
     class DBHelper
     {
-        private static string connectionString = @"Data Source=HOVANVYDUT;Initial Catalog=StudentManagement;Integrated Security=True";
+        // = @"Data Source=HOVANVYDUT;Initial Catalog=StudentManagement2;Integrated Security=True";
+        private static string connectionString;
         private SqlConnection cnn;
         private static DBHelper _Instance;
         public static DBHelper Instance
@@ -19,7 +20,7 @@ namespace ThreeLayerDemo.DAL
             {
                 if (_Instance == null)
                 {
-                    _Instance = new DBHelper(connectionString);
+                    _Instance = new DBHelper();
                 }
 
                 return _Instance;
@@ -31,6 +32,12 @@ namespace ThreeLayerDemo.DAL
             }
         }
 
+        private DBHelper()
+        {
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["dbConnectionString"].ConnectionString;
+            this.cnn = new SqlConnection(connectionString);
+        }
+
         private DBHelper(string connectionString)
         {
             this.cnn = new SqlConnection(connectionString);
@@ -38,7 +45,6 @@ namespace ThreeLayerDemo.DAL
 
         public DataTable GetRecords(string query)
         {
-            DataTable dataTable = new DataTable();
             SqlCommand command = new SqlCommand(query, cnn);
             SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(command);
             DataSet dataSet = new DataSet();

@@ -161,10 +161,8 @@ namespace ThreeLayerDemo.GUI
             // 
             // txtMSSV
             // 
-            this.txtMSSV.Enabled = false;
             this.txtMSSV.Location = new System.Drawing.Point(100, 43);
             this.txtMSSV.Name = "txtMSSV";
-            this.txtMSSV.ReadOnly = true;
             this.txtMSSV.Size = new System.Drawing.Size(185, 22);
             this.txtMSSV.TabIndex = 1;
             // 
